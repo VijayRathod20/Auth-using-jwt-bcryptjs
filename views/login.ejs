@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-         .container{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-        label{
-            display: block;
-        }
-        div{
-            padding: 1rem;
-        }
-        form{
-            background-color: rgb(151, 224, 224);
-        }
-        input{
-            padding: 0.5rem 3rem;
-            font-size: 1.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <div class="container">
-        
-        <form action="/login" method="post">
-            <div>
-                <h1>User Login</h1>
-            </div>
 
-            <div>
-                <label for="email">Email</label>
-                <input type="text" name="email" placeholder="Enter Email">
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" name="password" placeholder="Enter Password">
-            </div>
-            <div>
-                <input type="submit" value="Login">
-            </div>
-        </form>
+<body>
+    <div class="main">
+        <div class="container">
+
+            <form action="/login" method="post" onsubmit="return verifyPassword()">
+                <div>
+                    <h1>User Login</h1>
+                </div>
+
+                <div>
+                    <label for="email">Email</label>
+                    <input type="text" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="pass">
+                    <span id="err"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Login">
+                </div>
+                <div class="link">
+                    <span>Dont have an account!! </span><a href="/">Register</a>
+                </div>
+
+            </form>
+        </div>
     </div>
 </body>
+
+<script>
+    function verifyPassword() {
+        var pw = document.getElementById("pass").value;
+        //check empty password field  
+        if (pw == "") {
+            document.getElementById("err").innerHTML = "**Fill the password please!";
+            return false;
+        }
+
+        //minimum password length validation  
+        if (pw.length < 5) {
+            document.getElementById("err").innerHTML = "**Password length must be atleast 8 characters";
+            return false;
+        }
+
+        //maximum length of password validation  
+        if (pw.length > 15) {
+            document.getElementById("err").innerHTML = "**Password length must not exceed 15 characters";
+            return false;
+        } else {
+            document.getElementById("err").style.display = "none";
+        }
+    }
+</script>
+
 </html>

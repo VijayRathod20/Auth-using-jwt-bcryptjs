@@ -6,58 +6,71 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register User</title>
-    <style>
-        .container{
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-        }
-        label{
-            display: block;
-        }
-        div{
-            padding: 1rem;
-        }
-        form{
-            background-color: rgb(151, 224, 224);
-        }
-        input{
-            padding: 0.5rem 3rem;
-            font-size: 1.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <div class="main">
     <div class="container">
-        
-        <form action="/register" method="post">
+
+        <form action="/register" method="post" onsubmit="return validation()">
             <div>
-                <h1>User Registration</h1>
+                <h1>Welcome Back!</h1>
             </div>
             <div>
                 <label for="name">Name:</label>
-                <input type="text" name="name" placeholder="Enter Name">
+                <input type="text" name="name" ">
             </div>
 
             <div>
                 <label for="email">Email</label>
-                <input type="text" name="email" placeholder="Enter Email">
+                <input type="text" name="email" required>
             </div>
 
             <div>
                 <label for="password">Password</label>
-                <input type="password" name="password" placeholder="Enter Password">
+                <input type="password" name="password" >
+                <span id="err"></span>
             </div>
             <div>
                 <label for="cpassword">Confirm Password</label>
-                <input type="password" name="cpassword" placeholder="Re Enter Password">
+                <input type="password" name="cpassword" >
+                <span id="err"></span>
             </div>
             <div>
                 <input type="submit" value="Register">
             </div>
+            <div class="div">
+                <span>Already have an account! </span><a href="/login">Login</a>
+            </div>
+
         </form>
     </div>
+</div>
 </body>
+<script>
+    function validation() {
+        var pw = document.getElementById("pass").value;
+        //check empty password field  
+        if (pw == "") {
+            document.getElementById("err").innerHTML = "**Fill the password please!";
+            return false;
+        }
+
+        //minimum password length validation  
+        if (pw.length < 8) {
+            document.getElementById("err").innerHTML = "**Password length must be atleast 8 characters";
+            return false;
+        }
+
+        //maximum length of password validation  
+        if (pw.length > 15) {
+            document.getElementById("err").innerHTML = "**Password length must not exceed 15 characters";
+            return false;
+        } else {
+            document.getElementById("err").style.display = "none";
+        }
+    }
+</script>
 
 </html>

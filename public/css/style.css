@@ -1,0 +1,57 @@
+:root {
+    --Green: #174F2A;
+    --Gold: #A4843F;
+    --white: #ffffff;
+    --black: #000000;
+    --Red: #FF0000;
+}
+body{
+    background-image: url(/images/auth-bg.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+.main{
+    width: 1170px;
+    margin: 0 auto;
+}
+*{
+    box-sizing: border-box;
+}
+.container {
+    width: 400px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.295);
+    color: black;
+    align-items: center;
+}
+
+label {
+    display: block;
+    color: var(--white);
+}
+
+div {
+    padding: 1rem;
+}
+
+h1,span{
+    color: var(--white);
+}
+a{
+    color: var(--Gold);
+}
+
+input {
+    width: 340px;
+    font-size: 1.5rem;
+    color: var(--black);
+}
+
+.link{
+    padding-top: 50%;
+}
+input[type="submit"]{
+    background-color: var(--Green);
+}
