@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User</title>
+    <style>
+        .container{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        label{
+            display: block;
+        }
+        div{
+            padding: 1rem;
+        }
+        form{
+            background-color: rgb(151, 224, 224);
+        }
+        input{
+            padding: 0.5rem 3rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        
+        <form action="/register" method="post">
+            <div>
+                <h1>User Registration</h1>
+            </div>
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" placeholder="Enter Name">
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="Enter Email">
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Enter Password">
+            </div>
+            <div>
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" name="cpassword" placeholder="Re Enter Password">
+            </div>
+            <div>
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
