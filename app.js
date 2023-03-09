@@ -27,20 +27,23 @@ const conn = mysql.createPool({
 // })
 
 app.get('/', (req, res) => {
-    res.render("registration")
+    const jwtToken = req.cookies.jwtToken;
+    if(jwtToken){
+        return res.redirect("/home");
+    }
+    res.render("registration");
 });
 
 //user registration
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     var sql = `select * from user where email = '${email}'`;
-    var result = conn.execute(sql);
+    var result = await conn.execute(sql);
 
-    console.log(result[0]);
-    if (result[0] != 0) {
+    console.log("query result"+result[0]);
+    if (result[0].length != 0) {
         return res.send(`User Already registered! please Login <a href="/login">login</a>`)
     }
-
 
     var hashPass = await bcrypt.hash(password, 10);
     console.log("hash " + hashPass);
@@ -48,7 +51,7 @@ app.post('/register', async (req, res) => {
     var sql = `insert into user(name,email,password) values('${name}','${email}','${hashPass}')`;
     var result = await conn.execute(sql);
     console.log(result[0])
-    res.send("user register successfully!")
+    res.send(`user register successfully!  <a href="/login"> Login </a>`)
 
 
 });
@@ -56,8 +59,12 @@ app.post('/register', async (req, res) => {
 
 //user login
 app.get('/login', (req, res) => {
+    const jwtToken = req.cookies.jwtToken;
+    if(jwtToken){
+        return res.redirect("/home");
+    }
     res.render("login");
-})
+});
 
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -75,7 +82,7 @@ app.post("/login", async (req, res) => {
     var match = await bcrypt.compare(password, bpass);
     console.log(match);
     if (!match) {
-        return res.send(`wrong password!`)
+        return res.send(`wrong email or password!`)
     }
 
     //generating jwt token

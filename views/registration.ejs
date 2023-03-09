@@ -11,64 +11,68 @@
 
 <body>
     <div class="main">
-    <div class="container">
+        <div class="container">
 
-        <form action="/register" method="post" onsubmit="return validation()">
-            <div>
-                <h1>Welcome Back!</h1>
-            </div>
-            <div>
-                <label for="name">Name:</label>
-                <input type="text" name="name" ">
-            </div>
+            <form action="/register" method="post" onsubmit="return validation()">
+                <div>
+                    <h1>Welcome Back!</h1>
+                </div>
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name">
+                    </div>
 
-            <div>
-                <label for="email">Email</label>
-                <input type="text" name="email" required>
-            </div>
+                    <div>
+                        <label for=" email">Email</label>
+                    <input type="email" name="email" required>
+                </div>
 
-            <div>
-                <label for="password">Password</label>
-                <input type="password" name="password" >
-                <span id="err"></span>
-            </div>
-            <div>
-                <label for="cpassword">Confirm Password</label>
-                <input type="password" name="cpassword" >
-                <span id="err"></span>
-            </div>
-            <div>
-                <input type="submit" value="Register">
-            </div>
-            <div class="div">
-                <span>Already have an account! </span><a href="/login">Login</a>
-            </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="pass"><br>
+                    <span id="err"></span>
+                </div>
+                <div>
+                    <label for="cpassword">Confirm Password</label>
+                    <input type="password" name="cpassword" id="cpassword"><br>
+                    <span id="cpasserr"></span>
+                </div>
+                <div>
+                    <input type="submit" value="Register">
+                </div>
+                <div class="div">
+                    <span>Already have an account! </span><a href="/login">Login</a>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 </body>
 <script>
     function validation() {
         var pw = document.getElementById("pass").value;
+        var pw2 = document.getElementById("cpassword").value;
         //check empty password field  
         if (pw == "") {
             document.getElementById("err").innerHTML = "**Fill the password please!";
             return false;
         }
-
         //minimum password length validation  
-        if (pw.length < 8) {
-            document.getElementById("err").innerHTML = "**Password length must be atleast 8 characters";
+        else if (pw.length < 5) {
+            document.getElementById("err").innerHTML = "**Password length must be atleast 5 characters";
             return false;
         }
-
         //maximum length of password validation  
-        if (pw.length > 15) {
+        else if (pw.length > 15) {
             document.getElementById("err").innerHTML = "**Password length must not exceed 15 characters";
             return false;
-        } else {
-            document.getElementById("err").style.display = "none";
+        }
+        else if (pw != pw2) {
+            document.getElementById("cpasserr").innerHTML = "**Confirm Password did not matched!"
+            return false;
+        }  
+        else {
+        document.getElementById("err").style.display = "none";
         }
     }
 </script>

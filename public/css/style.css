@@ -55,3 +55,18 @@ input {
 input[type="submit"]{
     background-color: var(--Green);
 }
+#err{
+    color: var(--Red);
+}
+.profile{
+    display: flex;
+    align-items: center;
+}
+.profile a{
+    text-decoration: none;
+    color: var(--Green);
+    border: 1px solid blue;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color: #ffffff;
+}
