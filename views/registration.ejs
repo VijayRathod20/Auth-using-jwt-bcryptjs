@@ -20,11 +20,12 @@
                 <div>
                     <label for="name">Name:</label>
                     <input type="text" name="name">
-                    </div>
+                </div>
 
-                    <div>
-                        <label for=" email">Email</label>
+                <div>
+                    <label for=" email">Email</label>
                     <input type="email" name="email" required>
+                    <span id="eerr"></span>
                 </div>
 
                 <div>
@@ -52,6 +53,7 @@
     function validation() {
         var pw = document.getElementById("pass").value;
         var pw2 = document.getElementById("cpassword").value;
+        var passw = /^(?=.*[-\#\$\.\%\&\@\!\+\=\\*])(?=.*[a-zA-Z])(?=.*\d).{6,12}$/;
         //check empty password field  
         if (pw == "") {
             document.getElementById("err").innerHTML = "**Fill the password please!";
@@ -70,9 +72,12 @@
         else if (pw != pw2) {
             document.getElementById("cpasserr").innerHTML = "**Confirm Password did not matched!"
             return false;
-        }  
-        else {
-        document.getElementById("err").style.display = "none";
+        }
+        if (pw.match(passw)) {
+            
+        }else{
+            document.getElementById("err").innerHTML = "**password should contain latters,numbers and specialchar"
+            return false;
         }
     }
 </script>

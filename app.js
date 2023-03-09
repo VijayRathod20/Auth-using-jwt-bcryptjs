@@ -48,23 +48,39 @@ app.post('/register', async (req, res) => {
     var hashPass = await bcrypt.hash(password, 10);
     console.log("hash " + hashPass);
 
-    var sql = `insert into user(name,email,password) values('${name}','${email}','${hashPass}')`;
+    const activation_token = Math.random().toString(36).substring(2, 15);
+    const activationLink = `http://localhost:3000/activate?token=${activation_token}`;
+    var sql = `insert into user(name,email,password,activation_token) values('${name}','${email}','${hashPass}','${activation_token}')`;
     var result = await conn.execute(sql);
     console.log(result[0])
-    res.send(`user register successfully!  <a href="/login"> Login </a>`)
+
+    //activation
+   
+
+    res.send(`user register successfully!  <a href="${activationLink}"> Activate Account </a>`)
 
 
 });
 
+app.get("/activate?",async (req,res)=>{
+    const actKey = req.query.token;
+    sql = `update user set activated = 1 where activation_token = "${actKey}"`;
+    var result = await conn.execute(sql);
+    var json = JSON.stringify(result);
+    console.log("activate result "+ json)
+    var arr = JSON.parse(json);
+    console.log(arr[0].insertId);
+    if(arr[0].affectedRows == 0){
+        res.send("invalid activation link");
+    }else{
+        res.send("your account is activated!")
+    }
+});
 
 //user login
 app.get('/login', (req, res) => {
-    const jwtToken = req.cookies.jwtToken;
-    if(jwtToken){
-        return res.redirect("/home");
-    }
     res.render("login");
-});
+})
 
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -82,7 +98,7 @@ app.post("/login", async (req, res) => {
     var match = await bcrypt.compare(password, bpass);
     console.log(match);
     if (!match) {
-        return res.send(`wrong email or password!`)
+        return res.send(`wrong user or password!`)
     }
 
     //generating jwt token

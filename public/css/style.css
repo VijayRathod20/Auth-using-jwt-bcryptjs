@@ -70,3 +70,6 @@ input[type="submit"]{
     border-radius: 1rem;
     background-color: #ffffff;
 }
+#cpasserr{
+    color: #FF0000;
+}
