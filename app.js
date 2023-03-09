@@ -34,6 +34,7 @@ app.get('/', (req, res) => {
     res.render("registration");
 });
 
+
 //user registration
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
@@ -69,11 +70,10 @@ app.get("/activate?",async (req,res)=>{
     var json = JSON.stringify(result);
     console.log("activate result "+ json)
     var arr = JSON.parse(json);
-    console.log(arr[0].insertId);
     if(arr[0].affectedRows == 0){
         res.send("invalid activation link");
     }else{
-        res.send("your account is activated!")
+        res.redirect("/login");
     }
 });
 
@@ -90,7 +90,6 @@ app.post("/login", async (req, res) => {
     if (result[0].length == 0) {
         return res.send(`user not regitered please register <a href="/">register</a>`)
     }
-    console.log(result[0]);
     const data = result[0];
     //comparing password
     let bpass = data[0].password;
@@ -100,14 +99,16 @@ app.post("/login", async (req, res) => {
     if (!match) {
         return res.send(`wrong user or password!`)
     }
+    const activationLink = `http://localhost:3000/activate?token=${data[0].activation_token}`;
+    if(data[0].activated == 0){
+       return res.render("activate",{activationLink});
+    }
 
     //generating jwt token
     const jwtToken = jwt.sign(data[0], "vijay");
     res.cookie("jwtToken", jwtToken);
     
     res.redirect('/home');
-
-
 })
 
 app.get("/home", (req, res) => {
