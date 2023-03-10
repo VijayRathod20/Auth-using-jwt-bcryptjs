@@ -58,9 +58,7 @@ app.post('/register', async (req, res) => {
     //activation
    
 
-    res.send(`user register successfully!  <a href="${activationLink}"> Activate Account </a>`)
-
-
+    res.send(`user register successfully!  <a href="${activationLink}"> Activate Account </a>`);
 });
 
 app.get("/activate?",async (req,res)=>{
@@ -77,8 +75,25 @@ app.get("/activate?",async (req,res)=>{
     }
 });
 
+//find user
+app.get("/finduser?",async (req,res)=>{
+    const email = req.query.email;
+    var sql = `select * from user where email = '${email}'`;
+    var result = await conn.execute(sql);
+    if (result[0].length > 0) {
+        res.json({ exists: true });
+      } else {
+        res.json({ exists: false });
+      }
+
+})
+
 //user login
 app.get('/login', (req, res) => {
+    const jwtToken = req.cookies.jwtToken;
+    if(jwtToken){
+        return res.redirect("http://localhost:3000/home");
+    }
     res.render("login");
 })
 

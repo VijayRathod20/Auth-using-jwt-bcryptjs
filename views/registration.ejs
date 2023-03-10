@@ -13,7 +13,7 @@
     <div class="main">
         <div class="container">
 
-            <form action="/register" method="post" onsubmit="return validation()">
+            <form action="/register" method="post" onsubmit="return passvalidation()">
                 <div>
                     <h1>Welcome Back!</h1>
                 </div>
@@ -24,7 +24,7 @@
 
                 <div>
                     <label for=" email">Email</label>
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" id="emailInput" onchange="findUser()" required><br>
                     <span id="eerr"></span>
                 </div>
 
@@ -35,11 +35,11 @@
                 </div>
                 <div>
                     <label for="cpassword">Confirm Password</label>
-                    <input type="password" name="cpassword" id="cpassword"><br>
+                    <input type="password" name="cpassword" id="cpassword" oninput="confirmPass()"><br>
                     <span id="cpasserr"></span>
                 </div>
                 <div>
-                    <input type="submit" value="Register">
+                    <input type="submit" value="Register" id="submit-btn" disabled>
                 </div>
                 <div class="div">
                     <span>Already have an account! </span><a href="/login">Login</a>
@@ -50,7 +50,8 @@
     </div>
 </body>
 <script>
-    function validation() {
+    const submit_btn = document.getElementById("submit-btn");
+    function passvalidation() {
         var pw = document.getElementById("pass").value;
         var pw2 = document.getElementById("cpassword").value;
         var passw = /^(?=.*[-\#\$\.\%\&\@\!\+\=\\*])(?=.*[a-zA-Z])(?=.*\d).{6,12}$/;
@@ -69,16 +70,47 @@
             document.getElementById("err").innerHTML = "**Password length must not exceed 15 characters";
             return false;
         }
-        else if (pw != pw2) {
-            document.getElementById("cpasserr").innerHTML = "**Confirm Password did not matched!"
-            return false;
-        }
-        if (pw.match(passw)) {
-            
-        }else{
+        else if (!pw.match(passw)) {
             document.getElementById("err").innerHTML = "**password should contain latters,numbers and specialchar"
             return false;
+
         }
+
+    }
+    function confirmPass() {
+        var pw = document.getElementById("pass").value;
+        var pw2 = document.getElementById("cpassword").value;
+        if (pw != pw2) {
+            document.getElementById("cpasserr").innerHTML = "**Confirm Password did not matched!"
+        } else {
+            document.getElementById("cpasserr").innerHTML = "Password matched!"
+            document.getElementById("cpasserr").style.color = "green";
+            submit_btn.disabled = false;
+        }
+
+    }
+
+    function findUser() {
+        const email = document.getElementById("emailInput").value;
+
+        fetch(`/finduser?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                const message = document.getElementById('eerr');
+
+                console.log(data)
+                if (data.exists) {
+                    message.innerHTML = "Email Already Exist";
+                    message.style.color = 'red';
+
+                } else {
+                    message.textContent = '';
+                    message.style.color = 'green';
+
+
+                }
+            })
+            .catch(err => console.log(err));
     }
 </script>
 
