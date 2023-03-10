@@ -141,6 +141,36 @@ app.get("/logout", (req, res) => {
     res.clearCookie("jwtToken");
     res.redirect("/")
 
+});
+
+app.get("/edit?",(req,res)=>{
+    const jwtToken = req.cookies.jwtToken;
+    if (!jwtToken) {
+        return res.send(`you are not authorized register first <a href="/">register</a>`);
+    }
+    const tokenData = jwt.verify(jwtToken, "vijay");
+    res.render("edit",{tokenData});
+})
+
+app.post("/edit",async (req,res)=>{
+    const {id,name,email,password,cpassword} = req.body;
+    sql = `SELECT * FROM auth.user where id = ${id};`
+    const result = await conn.execute(sql);
+    const data = result[0];
+    var oldPass = data[0].password;
+    console.log("old p "+oldPass);
+    var hashp = await bcrypt.hash(cpassword,10);
+    var match = await bcrypt.compare(password,oldPass);
+    console.log(match);
+    if(match){
+        var sql1 = `update user set name = "${name}", email="${email}", password="${hashp}" where id= ${id};`
+        var update = await conn.execute(sql1);
+        console.log("profile updated")
+        res.redirect('/home');
+    }else{
+        console.log("wrong old password")
+        res.redirect('/edit');
+    }
 })
 
 

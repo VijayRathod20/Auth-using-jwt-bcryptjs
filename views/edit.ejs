@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <form action="/edit" method="post">
+            <div>
+                <h1>Update Profile</h1>
+                <input type="hidden" name="id" value="<%=tokenData.id%>">
+            </div>
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" value="<%=tokenData.name%>">
+            </div>
+
+            <div>
+                <label for=" email">Email</label>
+                <input type="email" name="email" id="emailInput" value="<%=tokenData.email%>" required><br>
+                <span id="eerr"></span>
+            </div>
+
+            <div>
+                <label for="password">Old Password</label>
+                <input type="password" name="password" id="pass"><br>
+                <span id="err"></span>
+            </div>
+            <div>
+                <label for="cpassword">New Password</label>
+                <input type="password" name="cpassword" id="cpassword" oninput="confirmPass()"><br>
+                <span id="cpasserr"></span>
+            </div>
+            <div>
+                <input type="submit" value="update" id="submit-btn">
+            </div>
+            <div class="div">
+                <span>Already have an account! </span><a href="/login">Login</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
