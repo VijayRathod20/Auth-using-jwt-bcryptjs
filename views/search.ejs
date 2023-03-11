@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" href="#">
+    <style>
+        tr,td{
+            border: 2px solid blue;
+            padding: 10px;
+            
+        }
+    </style>
+
+</head>
+<body>
+        <h2>firstname = ^</h2>
+        <h2>lastname = ~</h2>
+        <h2>email = @</h2>
+      <form action="/search" method="get">
+        <input id="search" type="text" name="search" placeholder="enter what you want to search">
+        <select name="multi" id="">
+            <option value="and">AND</option>
+            <option value="or">OR</option>
+        </select>
+        <input type="submit" value="Go">
+    </form>
+    <br>
+    <br>
+   
+    <table border="1" style="width: 100%; text-align: center;">
+        <tr>
+            <td>ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>DOB</td>
+            
+        </tr>
+    <% for(let i=0; i<data.length; i++){ %>
+        
+        <tr>
+            <td><%= data[i].id %></td>
+            <td><%= data[i].first_name %></td>
+            <td><%= data[i].last_name %></td>
+            <td><%= data[i].email %></td>
+            <td><%= data[i].dob %></td>
+          
+        </tr>
+    <% } %>
+    </table>
+
+  
+    </body>
+</html>

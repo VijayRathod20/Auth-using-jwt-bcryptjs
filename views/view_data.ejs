@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViewData</title>
+    <style>
+        tr,
+        td {
+            border: 3px solid blue;
+            padding: 10px;
+        }
+
+        p {
+            cursor: pointer;
+            border: 1px solid blue;
+            text-align: center;
+            color: red;
+
+        }
+
+        div {
+            margin-top: 30px;
+        }
+
+        span {
+            padding: 10px;
+            color: red;
+            font-weight: bolder;
+            border: 2px solid blue;
+            width: 100px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/search_data" method="GET">
+        <label for="column">Search by:</label>
+        <select name="column" id="column">
+            <option value="first_name">First Name</option>
+            <option value="last_name">Last Name</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+            <option value="city">City</option>
+            <option value="state">State</option>
+            <option value="zip">zip</option>
+        </select>
+        <label for="term">Search term:</label>
+        <input type="text" name="term" id="term">
+        <button type="submit">Search</button>
+    </form>
+
+
+    <form action="/deleteSelected" method="POST">
+        <table id="table1">
+            <tr>
+                <td>Select</td>
+                <td>ID</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Gender</td>
+                <td>DOB</td>
+                <td>Desigation</td>
+                <td>Addres</td>
+                <td>Email</td>
+                <td>Phone</td>
+                <td>City</td>
+                <td>State</td>
+                <td>Zipcode</td>
+                <td>Relationship Status</td>
+            </tr>
+            <div id="test">
+                <%for(let i=0; i<record.length; i++) {%>
+                    <tr id="tr<%=record[i].id%>">
+                        <td><input type="checkbox" value="<%=record[i].id%>" name="selectedRows" class="selectedRows"
+                                id="check"></td>
+                        <td>
+                            <%=record[i].id%>
+                        </td>
+                        <td>
+                            <%=record[i].first_name%>
+                        </td>
+                        <td>
+                            <%=record[i].last_name%>
+                        </td>
+                        <td>
+                            <%=record[i].gender%>
+                        </td>
+                        <td>
+                            <%=record[i].dob%>
+                        </td>
+                        <td>
+                            <%=record[i].job_designation%>
+                        </td>
+                        <td>
+                            <%=record[i].address1%>
+                        </td>
+                        <td>
+                            <%=record[i].email%>
+                        </td>
+                        <td>
+                            <%=record[i].phone%>
+                        </td>
+                        <td>
+                            <%=record[i].city%>
+                        </td>
+                        <td>
+                            <%=record[i].state%>
+                        </td>
+                        <td>
+                            <%=record[i].zip%>
+                        </td>
+                        <td>
+                            <%=record[i].relation_status%>
+                        </td>
+                        <td>
+                            <p onclick="deleteOne(`<%=record[i].id%>`)">delete</p>
+                        </td>
+                        <td><a href="edit_data?id=<%=record[i].id%>">edit</a></td>
+                    </tr>
+                    <%}%>
+            </div>
+        </table>
+        <div>
+            <span id="deleteBtn">Delete Selected</span>
+            <span style="color: green;" id="retriveData" onclick="retriveData()">RetriveData</span>
+        </div>
+        <div>
+            <div>
+                <%let pages=count_record/limit %>
+                    <% for(let i=0;i<pages;i++) { %>
+                        <span id="<%=i+1%>" onclick="pagination('/view_data?id=<%=i+1%>&ajax=true')">page<%=i+1%></span>
+                        <%}%>
+            </div>
+
+    </form>
+
+
+</body>
+<script>
+
+    function pagination(x) {
+        console.log(x)
+        var table1 = document.getElementById('table1');
+        var dlt = document.getElementById('deleteBtn');
+        var str = "";
+        var str2 = "";
+        fetch(x).then((response) => { return response.json() }).then((responsedata) => {
+            record = responsedata;
+
+            str += `
+    <tr>
+        <td>Checkbox</td>
+        <td>ID</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Gender</td>
+        <td>DOB</td>
+        <td>Desigation</td>
+        <td>Addres</td>
+        <td>Email</td>
+        <td>Phone</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Zipcode</td>
+        <td>Relationship Status</td>
+        <td>Actions</td>
+    </tr>`
+            for (let i = 0; i < record.length; i++) {
+                str += `<tr id="tr${record[i].id}">
+        <td>
+            <input type="checkbox" value="${record[i].id}" name="selecterows" class="selecterows" ></td>
+        <td>${record[i].id}</td>
+        <td>${record[i].first_name}</td>
+        <td>${record[i].last_name}</td>
+        <td>${record[i].gender}</td>
+        <td>${record[i].dob}</td>
+        <td>${record[i].job_designation}</td>
+        <td>${record[i].address1}</td>
+        <td>${record[i].email}</td>
+        <td>${record[i].phone}</td>
+        <td>${record[i].city}</td>
+        <td>${record[i].state}</td>
+        <td>${record[i].zip}</td>
+        <td>${record[i].relation_status}</td>
+        <td><p id="delete" onclick="deleteOne('${record[i].id}')">Delete</p>
+            </td>
+            <td><a href="edit?id=${record[i].id}">edit</a></td>
+        
+    </tr>
+    `;
+            }
+            str2 += `
+    <span id="deleteBtn">Delete Selected</span>
+    `;
+            console.log(str);
+            table1.innerHTML = str;
+            dlt.innerHTML = str2;
+
+        });
+    }
+
+    async function deleteOne(id) {
+        const shouldDelete = confirm(`Are you sure you want to delete rows with the following IDs: ${id}?`);
+        if (!shouldDelete) { return; }
+        document.getElementById(`tr${id}`).style.display = "none";
+        const response = fetch(`http://localhost:3000/deleteOne?id=${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id
+            })
+        }).then(res => res.json())
+            .then(data => {
+                if (data) {
+                    alert("Deleted successfully!");
+                }
+            })
+    }
+
+    const deleteButton = document.getElementById("deleteBtn");
+    deleteButton.addEventListener('click', () => {
+        var checkedData = [];
+        var checkedIds = document.getElementsByClassName("selectedRows");
+        for (let i = 0; i < checkedIds.length; i++) {
+            if (checkedIds[i].checked) {
+                checkedData.push(checkedIds[i].value);
+            }
+
+        }
+        const shouldDelete = confirm(`Are you sure you want to delete rows with the following IDs: ${checkedData.join(', ')}?`);
+        if (!shouldDelete) { return; }
+        checkedData.forEach(id => {
+            document.getElementById(`tr${id}`).style.display = "none";
+        });
+
+        const ans = fetch(`http://localhost:3000/deleteData?id=${checkedData}`);
+    });
+
+    async function retriveData() {
+        fetch('http://localhost:3000/retrive').then
+            (response => {
+                console.log(response);
+            }).then
+            (data => {
+                alert("retrived succeess fully");
+            })
+    }
+
+
+</script>
+
+</html>

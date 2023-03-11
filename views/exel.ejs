@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        tr,td {
+            border: 2px solid black;
+            padding: 20px;
+        }
+        span{
+            font-weight: bolder;
+            border: 2px solid black;
+            border-radius: 5px;
+            font-size: 50px;
+            background-color: aliceblue;
+            cursor: pointer;
+        }
+        table{
+            background-color: #cfe0e8;
+        }
+        p{
+            color: navy;
+            font-weight: bold;
+            cursor: pointer;
+            border: 3px solid black;
+            padding: 5px;
+            background-color: white;
+        }
+        input{
+            padding: 10px;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <!-- <form action="/save"> -->
+    <form action="/saveAll" method="post">
+    <table id="row">
+        <tr>
+            <td>ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Gender</td>
+            <td>Email</td>
+            <td>Phone</td>
+        </tr>
+
+        <%for(let i=0; i<users.length; i++){%>
+            <tr>
+                <td>
+                    <input type="text" value="<%=users[i].id%>" name="user_id"  size="1px" style="text-align: center;">
+                </td>
+                <td>
+                    <input type="text" name="first_name" value="<%=users[i].first_name%>" id="fname<%=users[i].id%>">
+                </td>
+                <td>
+                    <input type="text" name="last_name" value="<%=users[i].last_name%>" id="lname<%=users[i].id%>">
+                </td>
+                <td>
+                    <input type="text" name="gender" value="<%=users[i].gender%>" id="gen<%=users[i].id%>">
+                </td>
+                <td>
+                    <input type="text" name="email" value="<%=users[i].email%>" id="email<%=users[i].id%>">
+                </td>
+                <td>
+                    <input type="text" name="phone" value="<%=users[i].phone%>" id="phone<%=users[i].id%>">
+                </td>
+                <td><p onclick="edit(`<%=users[i].id%>`)">Save</p></td>
+                <td><p onclick="del(`<%=users[i].id%>`)">Delete</p></td>
+            </tr>
+            <%}%>
+    </table>
+    <span id="add" onclick="addRow()">Add</span><br>
+   <input type="submit" name="submit" value="Save all">
+</body>
+</form>
+
+    <!-- </form> -->
+
+    
+   
+<script>
+    function addRow() {
+        var row = document.getElementById("row");
+        const item = document.createElement("tr");
+        item.classList.add("row-item")
+        item.innerHTML = `
+      
+                    <td></td>
+                    <td>
+                    <input type="text" name="newfirst_name" value="" id="fname">
+                    </td>
+                    <td>
+                        <input type="text" name="newlast_name" value="" id="lname">
+                    </td>
+                    <td>
+                        <input type="text" name="newgender" value="" id="gen">
+                    </td>
+                    <td>
+                        <input type="text" name="newemail" value="" id="email">
+                    </td>
+                    <td>
+                        <input type="text" name="newphone" value="" id="phone">
+                    </td>
+                    <td><p onclick="add()">Save</p></td>
+        `;
+        row.appendChild(item);
+    }
+    async function edit(id) {
+        var id = id;
+        var first_name = document.getElementById(`fname${id}`).value;
+        var last_name = document.getElementById(`lname${id}`).value;
+        var gender = document.getElementById(`gen${id}`).value;
+        var email = document.getElementById(`email${id}`).value;
+        var phone = document.getElementById(`phone${id}`).value;
+        fetch(`http://localhost:3000/save?id=${id}&first_name=${first_name}&last_name=${last_name}&gender=${gender}&email=${email}&phone=${phone}`);
+
+    }
+    async function add() {
+        var first_name = document.getElementById("fname").value;
+        var last_name = document.getElementById("lname").value;
+        var gender = document.getElementById("gen").value;
+        var email = document.getElementById("email").value;
+        var phone = document.getElementById("phone").value;
+
+        fetch(`http://localhost:3000/add?first_name=${first_name}&last_name=${last_name}&gender=${gender}&email=${email}&phone=${phone}`);
+
+
+    }
+   async function del(uid){
+    var uid = uid;
+    fetch(`http://localhost:3000/delete?uid=${uid}`);
+    location.reload();
+   }
+
+</script>
+
+</html>
