@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 10px;
+            
+        }
+
+        table {
+            height: 300px;
+            width: 300px;
+        }
+
+        tr,
+        td {
+            border: 2px solid black;
+            /* background-color: blue; */
+        }
+        .game{
+            display: flex;
+            justify-content: center;
+        }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>  
+    <p id="timer"></p>
+    <div class="game">
+      
+        <table id="myTable">
+            <tr class="rows">
+                <td class="cells"></td>
+                <td class="cells"></td>
+            </tr>
+            <tr class="rows">
+                <td class="cells"></td>
+                <td class="cells"></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var vijaytime = document.getElementById("timer");
+        startCountdown(60);
+        function startCountdown(seconds) {
+            let counter = seconds;
+
+            const interval = setInterval(() => {
+
+                counter--;
+                vijaytime.innerHTML = counter
+
+                if (counter <= 0) {
+                    clearInterval(interval);
+                    window.location.reload();
+                }
+            }, 1000);
+        }
+
+        addCells();
+
+        function addCells() {
+            var vijaytable = document.getElementById("myTable");
+            var row = vijaytable.insertRow(-1);
+            row.setAttribute("class", "rows")
+            for (var i = 0; i < vijaytable.rows[0].cells.length; i++) {
+                var cell = row.insertCell(-1);
+                cell.setAttribute("class", "cells");
+            };
+            for (var i = 0; i < vijaytable.rows.length; i++) {
+                var cell = vijaytable.rows[i].insertCell(-1);
+                cell.setAttribute("class", "cells")
+
+            };
+
+            var vijayOpacityCounter = 0.3
+            var vijaytds = document.querySelectorAll(".cells");
+            var vijayRandomNumber = Math.floor(Math.random() * vijaytds.length);
+            var R = Math.floor(Math.random() * 255);
+            var G = Math.floor(Math.random() * 255);
+            var B = Math.floor(Math.random() * 255);
+            vijaytds.forEach((td) => {
+                td.style.background = `rgba(${R}, ${G}, ${B})`
+            })
+            vijaytds[vijayRandomNumber].style.background = `rgba(${R}, ${G}, ${B}, ${vijayOpacityCounter})`;
+            vijaytds[vijayRandomNumber].addEventListener("click", () => {
+
+                vijayOpacityCounter += 0.8;
+                addCells()
+            })
+        }
+
+
+
+    </script>
+</body>
+
+</html>

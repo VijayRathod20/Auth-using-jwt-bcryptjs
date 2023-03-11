@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+        .game{
+            text-align: center;
+            background-color: lightblue;
+            margin-left: 400px;
+            margin-right: 400px;
+            border: 3px solid black;
+            border-radius: 10px;
+            
+        }
+        table,tr,td{
+            color: blue;
+            height: 80px;
+            width: 200px;
+            border: 2px solid black;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        button{
+            margin: 10px;
+            background-color: red;
+            width: 100px;
+            height: 50px;
+        }
+        td:hover{
+            background-color: white;
+        }
+
+    </style>
+    </head>
+    <body>
+
+        <div class="game">
+            <h2>
+                Tic Tac Toy
+            </h2>
+
+            <table align="center">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <button onclick="restart()">Restart Game</button>
+        </div>
+
+        <script>
+        let vijayCells = document.querySelectorAll('td');
+        vijayCells = Array.from(vijayCells);
+
+        let vijayCurrentPlayer  = "X";
+        let vijayGameRunning = true;
+         
+        let vijayWiningConditions = [
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,3,6],
+            [1,4,7],
+            [2,5,8],
+            [0,4,8],
+            [2,4,6]
+        ]
+
+        vijayCells.forEach(function(cell){
+            cell.addEventListener('click',function(){
+                if(cell.innerText != "") return;
+                cell.innerText = vijayCurrentPlayer;
+                if(vijayGameRunning){
+                    checkWin();
+                }
+                
+                vijayCurrentPlayer = vijayCurrentPlayer == "X" ? "O" : "X";
+            })
+        });
+
+        function checkWin(){
+            vijayWiningConditions.forEach(function(condition){
+                
+                let check = condition.every(ids => vijayCells[ids].innerText == vijayCurrentPlayer);
+           
+                if(check){
+                    
+                        alert(`${vijayCurrentPlayer} win the game`);
+                        vijayGameRunning = false;
+                   
+                  
+                }
+            })
+        }
+        
+        function restart(){
+            window.location.reload();
+        }
+    
+    </script>
+    </body>
+</html>
